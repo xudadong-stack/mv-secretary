@@ -1,0 +1,79 @@
+<resources>
+    <string name="app_name">MV Secretary</string>
+    <string name="app_name_calculator">计算器</string>
+    <string name="app_name_calendar">日历</string>
+    <string name="app_subtitle">私密文件保险柜</string>
+
+    <!-- Lock screen -->
+    <string name="lock_title">请输入密码</string>
+    <string name="lock_hint">输入密码进入</string>
+    <string name="lock_set_password">设置密码</string>
+    <string name="lock_confirm_password">确认密码</string>
+    <string name="lock_password_mismatch">两次密码输入不一致</string>
+    <string name="lock_password_wrong">密码错误</string>
+    <string name="lock_password_ok">确认</string>
+
+    <!-- Main screen -->
+    <string name="main_title">MV Secretary</string>
+    <string name="main_import">导入</string>
+    <string name="main_delete">删除</string>
+    <string name="main_rename">重命名</string>
+    <string name="main_no_files">暂无文件，点击右上角导入</string>
+    <string name="main_select_hint">请选择要操作的文件</string>
+
+    <!-- Folder -->
+    <string name="folder_new">新建文件夹</string>
+    <string name="folder_header">文件夹</string>
+    <string name="files_header">文件</string>
+
+    <!-- Image preview -->
+    <string name="image_preview_title">图片预览</string>
+
+    <!-- Settings -->
+    <string name="settings_title">设置</string>
+    <string name="settings_change_password">修改密码</string>
+    <string name="settings_old_password">原密码</string>
+    <string name="settings_new_password">新密码</string>
+    <string name="settings_disguise_icon">伪装图标</string>
+    <string name="settings_disguise_normal">默认图标</string>
+    <string name="settings_disguise_calculator">计算器</string>
+    <string name="settings_disguise_calendar">日历</string>
+    <string name="settings_disguise_tip">提示：切换图标后，桌面可能需要十几秒才会刷新显示，这是系统缓存机制。</string>
+    <string name="settings_about">关于</string>
+    <string name="settings_version">版本</string>
+    <string name="settings_switch_success">切换成功</string>
+    <string name="settings_password_changed">密码修改成功</string>
+    <string name="settings_old_password_wrong">原密码错误</string>
+    <string name="settings_empty_password">密码不能为空</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_confirm">确定</string>
+    <string name="dialog_cancel">取消</string>
+    <string name="dialog_delete_title">确认删除</string>
+    <string name="dialog_delete_message">确定要删除选中的文件吗？此操作不可恢复。</string>
+    <string name="dialog_rename_title">重命名</string>
+    <string name="dialog_rename_hint">输入新文件名</string>
+
+    <!-- File types -->
+    <string name="file_type_image">图片</string>
+    <string name="file_type_video">视频</string>
+    <string name="file_type_audio">音频</string>
+    <string name="file_type_other">文件</string>
+
+    <!-- Filter -->
+    <string name="filter_all">全部文件</string>
+    <string name="filter_images">图片</string>
+    <string name="filter_videos">视频</string>
+    <string name="filter_audios">音频</string>
+    <string name="filter_others">其他文件</string>
+
+    <!-- Video player -->
+    <string name="video_player_title">视频播放</string>
+
+    <!-- Storage permission -->
+    <string name="storage_permission_required">需要存储权限才能导入文件</string>
+    <string name="storage_permission_denied">存储权限被拒绝，请在设置中手动授权</string>
+
+    <!-- Splash screen -->
+    <string name="splash_skip_text">跳过 %ds</string>
+</resources>

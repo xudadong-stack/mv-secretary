@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- 背景圆角方形，颜色使用你界面里深蓝色的 #1C274F -->
+    <path
+        android:fillColor="#1C274F"
+        android:pathData="M0,20C0,8.95 8.95,0 20,0L88,0C99.05,0 108,8.95 108,20L108,88C108,99.05 99.05,108 88,108L20,108C8.95,108 0,99.05 0,88L0,20Z"/>
+    <!-- 白色的包裹主体 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M22,40C22,38.89 22.89,38 24,38L60,38L72,50L84,50C85.11,50 86,50.89 86,52L86,68L84,68L82,68L82,60L74,60L74,68L60,68C52,68 42,68 34,68L34,58L26,58L24,58C22.89,58 22,57.11 22,56L22,40Z"/>
+    <!-- 包裹上的条形码装饰（体现扫码属性） -->
+    <path
+        android:fillColor="#1C274F"
+        android:pathData="M34,45L36,45L36,53L34,53L34,45ZM38,45L40,45L40,53L38,53L38,45ZM42,45L46,45L46,53L42,53L42,45ZM48,45L50,45L50,53L48,53L48,45Z"/>
+    <!-- 包裹上的向上箭头 -->
+    <path
+        android:fillColor="#1C274F"
+        android:pathData="M76,46L76,38L68,38L68,44L70,42L70,46L74,46L74,42L76,46Z"/>
+</vector>
