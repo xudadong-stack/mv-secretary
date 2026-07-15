@@ -17,6 +17,14 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
+    
+    <!-- 伪装计算器/日历主题（浅色背景，避免闪黑） -->
+    <style name="Theme.Disguise" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
+    </style>
+
     <!-- 开屏广告主题（白色背景 + 全屏） -->
     <style name="Theme.Splash" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@android:color/white</item>
@@ -35,4 +43,17 @@
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:textColorHint">@color/text_hint</item>
     </style>
+
+    <!-- 数字键盘 PIN 按钮 -->
+    <style name="PinButton" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_margin">6dp</item>
+        <item name="android:background">@drawable/bg_calc_dark</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
 </resources>
