@@ -47,6 +47,7 @@ import io.reactivex.schedulers.Schedulers;
 public class FileListActivity extends BaseLockActivity {
 
     private static final int REQUEST_CODE_PICK_FILE = 1001;
+    private static final int MAX_IMPORT_COUNT = 10;
     private static final int REQUEST_CODE_STORAGE_PERM = 1002;
 
     private String categoryType;
@@ -177,9 +178,10 @@ public class FileListActivity extends BaseLockActivity {
     }
 
     private void openFilePickerInternal() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("*/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         startActivityForResult(intent, REQUEST_CODE_PICK_FILE);
     }
 
@@ -187,8 +189,19 @@ public class FileListActivity extends BaseLockActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_PICK_FILE && resultCode == RESULT_OK && data != null) {
-            Uri uri = data.getData();
-            if (uri != null) importFile(uri);
+            List<Uri> uris = new ArrayList<>();
+            Uri singleUri = data.getData();
+            if (singleUri != null) {
+                uris.add(singleUri);
+            }
+            if (data.getClipData() != null) {
+                int count = data.getClipData().getItemCount();
+                for (int i = 0; i < count; i++) {
+                    Uri uri = data.getClipData().getItemAt(i).getUri();
+                    if (uri != null) uris.add(uri);
+                }
+            }
+            importFiles(uris);
         }
     }
 
@@ -206,29 +219,58 @@ public class FileListActivity extends BaseLockActivity {
         }
     }
 
-    private void importFile(Uri uri) {
-        Toast.makeText(this, "正在导入文件...", Toast.LENGTH_SHORT).show();
+    private void importFiles(List<Uri> uris) {
+        if (uris.isEmpty()) return;
 
-        disposables.add(
-                FileImportUtil.importFile(this, uri)
-                        .flatMap(info -> {
-                            FileEntity entity = new FileEntity(
-                                    info.name, info.path, info.type,
-                                    info.mimeType, info.size
-                            );
-                            entity.setFolderId(currentFolderId);
-                            return fileDao.insert(entity);
-                        })
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                id -> Toast.makeText(this, "导入成功", Toast.LENGTH_SHORT).show(),
-                                error -> {
-                                    String msg = error.getMessage();
-                                    Toast.makeText(this, "导入失败: " + (msg != null ? msg : "未知错误"), Toast.LENGTH_SHORT).show();
-                                }
-                        )
-        );
+        if (uris.size() > MAX_IMPORT_COUNT) {
+            Toast.makeText(this, "最多只能选择 " + MAX_IMPORT_COUNT + " 个文件，已自动取前 " + MAX_IMPORT_COUNT + " 个", Toast.LENGTH_LONG).show();
+            uris = uris.subList(0, MAX_IMPORT_COUNT);
+        }
+
+        Toast.makeText(this, "正在导入 " + uris.size() + " 个文件...", Toast.LENGTH_SHORT).show();
+
+        final int[] completed = {0};
+        final int[] success = {0};
+        final int[] failed = {0};
+        final int total = uris.size();
+
+        for (Uri uri : uris) {
+            disposables.add(
+                    FileImportUtil.importFile(this, uri)
+                            .flatMap(info -> {
+                                FileEntity entity = new FileEntity(
+                                        info.name, info.path, info.type,
+                                        info.mimeType, info.size
+                                );
+                                entity.setFolderId(currentFolderId);
+                                return fileDao.insert(entity);
+                            })
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(
+                                    id -> {
+                                        completed[0]++;
+                                        success[0]++;
+                                        if (completed[0] == total) {
+                                            String msg = "导入完成：" + success[0] + " 个成功";
+                                            if (failed[0] > 0) msg += "，" + failed[0] + " 个失败";
+                                            Toast.makeText(FileListActivity.this, msg, Toast.LENGTH_LONG).show();
+                                            loadFiles();
+                                        }
+                                    },
+                                    error -> {
+                                        completed[0]++;
+                                        failed[0]++;
+                                        if (completed[0] == total) {
+                                            String msg = "导入完成：" + success[0] + " 个成功";
+                                            if (failed[0] > 0) msg += "，" + failed[0] + " 个失败";
+                                            Toast.makeText(FileListActivity.this, msg, Toast.LENGTH_LONG).show();
+                                            loadFiles();
+                                        }
+                                    }
+                            )
+                );
+        }
     }
 
     // ========== Folder Navigation ==========
@@ -722,6 +764,8 @@ public class FileListActivity extends BaseLockActivity {
             if (isSelectionMode) {
                 // Selection mode: show checkbox
                 holder.cbSelect.setVisibility(View.VISIBLE);
+                // Clear stale long-click listener from previous normal-mode binding
+                holder.itemView.setOnLongClickListener(null);
                 holder.cbSelect.setChecked(selectedFileIds.contains(file.getId()));
 
                 holder.itemView.setOnClickListener(v -> {

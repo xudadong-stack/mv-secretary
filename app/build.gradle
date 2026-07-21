@@ -5,10 +5,10 @@ android {
 
     defaultConfig {
         applicationId "com.secretary"
-        minSdkVersion 21
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion 25
+        targetSdkVersion 30
+        versionCode 3
+        versionName "3.0"
     }
 
     compileOptions {
